@@ -2,7 +2,8 @@ import { ArrowRight, Sparkles } from "lucide-react";
 
 const CopilotShowcase = () => {
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="copilot-section" className="relative py-24 lg:py-32 overflow-hidden">
+      {/* ... keep existing code (entire section content unchanged) */}
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Section header */}
         <div className="text-center mb-16">

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturesNav from "@/components/FeaturesNav";
@@ -11,6 +13,13 @@ import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
+  const location = useLocation();
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <Navbar />

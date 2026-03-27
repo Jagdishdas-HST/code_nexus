@@ -44,7 +44,7 @@ const WorkflowSection = () => {
   const [activeItem, setActiveItem] = useState("actions");
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="workflow-section" className="relative py-24 lg:py-32 overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-blue-900/10 via-purple-900/5 to-transparent rounded-full blur-3xl" />
 

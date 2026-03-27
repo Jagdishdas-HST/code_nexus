@@ -1,8 +1,45 @@
+import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const CTASection = () => {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSignUp = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address to sign up.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      toast({
+        title: "Welcome to GitHub! 🎉",
+        description: "Check your inbox to complete registration.",
+      });
+      navigate("/signup", { state: { email } });
+    }, 800);
+  };
+
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="pricing-section" className="relative py-24 lg:py-32 overflow-hidden">
       {/* Background glow */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="w-[600px] h-[400px] bg-gradient-to-r from-gh-green/10 via-gh-blue/10 to-purple-500/10 rounded-full blur-3xl" />
@@ -19,20 +56,36 @@ const CTASection = () => {
         </p>
 
         {/* Email signup */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <form
+          onSubmit={handleSignUp}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3"
+        >
           <input
             type="email"
             placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full sm:w-72 px-4 py-3 rounded-lg bg-white/10 border border-gh-border text-white placeholder:text-gh-text-secondary text-sm focus:outline-none focus:border-gh-blue-bright focus:ring-2 focus:ring-gh-blue/30 transition-all"
           />
-          <button className="w-full sm:w-auto px-6 py-3 bg-gh-green hover:bg-gh-green-bright text-white font-semibold text-sm rounded-lg transition-colors shadow-lg shadow-gh-green/20 active:scale-95">
-            Sign up for GitHub
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full sm:w-auto px-6 py-3 bg-gh-green hover:bg-gh-green-bright text-white font-semibold text-sm rounded-lg transition-colors shadow-lg shadow-gh-green/20 active:scale-95 disabled:opacity-60"
+          >
+            {loading ? "Signing up..." : "Sign up for GitHub"}
           </button>
-          <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-medium text-sm rounded-lg border border-white/15 hover:border-white/25 transition-all">
+          <button
+            type="button"
+            onClick={() => {
+              const el = document.getElementById("copilot-section");
+              el?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-medium text-sm rounded-lg border border-white/15 hover:border-white/25 transition-all"
+          >
             Try GitHub Copilot free
             <ArrowRight className="w-4 h-4" />
           </button>
-        </div>
+        </form>
       </div>
     </section>
   );

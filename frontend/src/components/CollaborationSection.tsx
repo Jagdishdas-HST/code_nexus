@@ -43,7 +43,7 @@ const ProgressBar = ({ value }: { value: number }) => (
 
 const CollaborationSection = () => {
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="collaboration-section" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">

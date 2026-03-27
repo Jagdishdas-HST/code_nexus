@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import GitHubLogo from "./GitHubLogo";
 
 const footerColumns = [
@@ -19,7 +21,44 @@ const footerColumns = [
   },
 ];
 
+const socialLinks = [
+  { name: "LinkedIn", url: "https://linkedin.com/company/github" },
+  { name: "Instagram", url: "https://instagram.com/github" },
+  { name: "YouTube", url: "https://youtube.com/github" },
+  { name: "X", url: "https://x.com/github" },
+  { name: "TikTok", url: "https://tiktok.com/@github" },
+  { name: "Twitch", url: "https://twitch.tv/github" },
+  { name: "GitHub", url: "https://github.com/github" },
+];
+
 const Footer = () => {
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const { toast } = useToast();
+
+  const handleSubscribe = () => {
+    if (!newsletterEmail.trim()) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email to subscribe.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "Subscribed! 📬",
+      description: "You'll receive our developer newsletter twice a month.",
+    });
+    setNewsletterEmail("");
+  };
+
   return (
     <footer className="relative border-t border-gh-border-subtle bg-black">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 lg:py-20">
@@ -33,9 +72,22 @@ const Footer = () => {
             <p className="text-xs text-gh-text-secondary mb-4">
               Get tips, technical guides, and best practices. Twice a month.
             </p>
-            <button className="px-5 py-2 text-sm font-medium text-white border border-white/20 hover:border-white/40 rounded-lg hover:bg-white/5 transition-all">
-              Subscribe
-            </button>
+            <div className="flex gap-2">
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
+                className="flex-1 px-3 py-2 text-sm bg-white/5 border border-gh-border rounded-lg text-white placeholder:text-gh-text-secondary focus:outline-none focus:border-gh-blue-bright transition-colors"
+              />
+              <button
+                onClick={handleSubscribe}
+                className="px-5 py-2 text-sm font-medium text-white border border-white/20 hover:border-white/40 rounded-lg hover:bg-white/5 transition-all shrink-0"
+              >
+                Subscribe
+              </button>
+            </div>
           </div>
 
           {/* Link columns */}
@@ -67,9 +119,15 @@ const Footer = () => {
             <a href="#" className="hover:text-white transition-colors">What is Git?</a>
           </div>
           <div className="flex items-center gap-4">
-            {["LinkedIn", "Instagram", "YouTube", "X", "TikTok", "Twitch", "GitHub"].map((social) => (
-              <a key={social} href="#" className="text-xs text-gh-text-secondary hover:text-white transition-colors">
-                {social}
+            {socialLinks.map((social) => (
+              <a
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-gh-text-secondary hover:text-white transition-colors"
+              >
+                {social.name}
               </a>
             ))}
           </div>
